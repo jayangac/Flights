@@ -1,10 +1,24 @@
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Builder;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddServer(new OpenApiServer
+    {
+        Description = "Development Server",
+        Url = "https://localhost:7221"
+    });
+});
+
 var app = builder.Build();
+app.UseCors(builder => builder.WithOrigins("*"));
+app.UseSwagger().UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
